@@ -14,13 +14,14 @@ class OriginalPageNotFound(Exception):
 
 class TranslationNotFound(Exception):
     pass
-   
+
 def translate(text_in, lang_in, lang_out):
     url_in = WIKI_BASE_URL % lang_in + text_in
     try:
         response = send_request(url_in)
         url_out = find_translated_article_url(response.text, lang_out)
         translated_text = _extract_text_from_url(url_out)
+        get_available_languages(response.text)
     except Exception as e:
         print 'Error: %s' % e
         sys.exit(1)
@@ -43,6 +44,28 @@ def find_translated_article_url(original_article_body, lang_out):
 
     return _decode_url(url[0]['href'].encode('utf-8'))
 
+def get_available_languages(original_article_body):
+    languages = []
+    soup = bs.BeautifulSoup(original_article_body)
+    language_links = soup.findAll('a', attrs={'lang': True})
+    for link in language_links:
+        languages.append(link['lang'])
+
+    print 'Available in %s languages:' % len(languages)
+    for lang_code in languages:
+        print _get_lang_by_code(lang_code)
+
+    return languages
+
+def _get_lang_by_code(lang_code):
+    with open('languages.txt', 'r') as languages:
+        for line in languages.readlines():
+            code = line.split(':')[0].strip()
+            lang = line.split(':')[1].strip()
+
+            if lang_code == code:
+                return lang
+
 def _is_disimbiguation(url):
     if '(disimbiguation)' in url:
         return True
@@ -51,7 +74,6 @@ def _is_disimbiguation(url):
 
 def send_request(url):
     r = requests.get(url)
-    print r
     if r.history:
         for resp in r.history:
             print resp.status_code
@@ -69,12 +91,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('text',
         help='Text to translate')
-    parser.add_argument('lang_in', 
+    parser.add_argument('lang_in',
         help='Language to translate from.')
     parser.add_argument('lang_out',
         help='Language to translate to.')
     args = parser.parse_args()
-    
+
     translated_text = translate(args.text, args.lang_in, args.lang_out)
     print '[%s] %s > [%s] %s' % (
         args.lang_in,
