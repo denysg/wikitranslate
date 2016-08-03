@@ -19,7 +19,7 @@ class TranslationNotFound(Exception):
     pass
 
 def translate(text_in, lang_in, lang_out):
-    url_in = WIKI_BASE_URL % lang_in + text_in
+    url_in = _get_wiki_link(text_in, lang_in)
     try:
         response = send_request(url_in)
         url_out = find_translated_article_url(response.text, lang_out)
@@ -30,7 +30,12 @@ def translate(text_in, lang_in, lang_out):
     return translated_text.decode('utf-8')
 
 def _extract_text_from_url(url):
-    return url.split('wiki/')[1].replace('_', ' ')
+    text = url.split('wiki/')[1].replace('_', ' ')
+    if '#' in text:
+        # This is in case a translated article is a chapter
+        # in another article.
+        text = text.split('#')[-1]
+    return text
 
 def find_translated_article_url(original_article_body, lang_out):
     soup = bs.BeautifulSoup(original_article_body)
@@ -47,7 +52,7 @@ def find_translated_article_url(original_article_body, lang_out):
 
 def get_available_languages(text_in, lang_in):
     languages = []
-    response = send_request(WIKI_BASE_URL % lang_in + text_in)
+    response = send_request(_get_wiki_link(text_in, lang_in))
     soup = bs.BeautifulSoup(response.text)
     language_links = soup.findAll('a', attrs={'lang': True})
 
@@ -80,6 +85,9 @@ def _get_lang_by_code(lang_code):
 def _sort_lang(lang_tuple):
     lang_tuple.sort(key=lambda x: x[1])
     return lang_tuple
+
+def _get_wiki_link(text, lang):
+    return WIKI_BASE_URL % lang + text
 
 def send_request(url):
     r = requests.get(url)

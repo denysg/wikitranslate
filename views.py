@@ -26,12 +26,16 @@ def index():
     output_lang = request.args.get('output-lang')
     output_languages = None
     translation = None
+    input_wiki_link = None
+    output_wiki_link = None
 
     try:
         if input_lang and input_text:
             output_languages = wiki.get_available_languages(input_text, input_lang)
+            input_wiki_link = wiki._get_wiki_link(input_text, input_lang)
         if output_lang:
             translation = wiki.translate(input_text, input_lang, output_lang)
+            output_wiki_link = wiki._get_wiki_link(translation, output_lang)
     except Exception as e:
         flash(e)
 
@@ -42,7 +46,9 @@ def index():
             translation=translation,
             input_lang=input_lang,
             output_lang=output_lang,
-            input_text=input_text)
+            input_text=input_text,
+            input_wiki_link=input_wiki_link,
+            output_wiki_link=output_wiki_link)
 
 if __name__ == '__main__':
     app.run(debug=True)

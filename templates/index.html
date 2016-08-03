@@ -27,7 +27,7 @@
         <input type="submit" value="{{ 'Translate' if output_languages else 'See available languages' }}">
     </form>
     {% if translation %}
-    Translation: <b>{{input_text}} > {{translation}}</b>
+    <h2>Translation: <a href="{{input_wiki_link}}">{{input_text}}</a> > <a href="{{output_wiki_link}}">{{translation}}</a></h2>
     {% endif %}
 </div>
 {% with messages = get_flashed_messages() %}
