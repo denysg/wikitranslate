@@ -1,9 +1,12 @@
+import os
 import sys
 import BeautifulSoup as bs
 import requests
 import urllib
 import argparse
 
+BASE_PATH = os.path.dirname(os.path.realpath(__file__))
+LANG_FILE = os.path.join(BASE_PATH, 'languages.txt')
 WIKI_BASE_URL = 'https://%s.wikipedia.org/wiki/'
 
 class RequestError(Exception):
@@ -21,12 +24,10 @@ def translate(text_in, lang_in, lang_out):
         response = send_request(url_in)
         url_out = find_translated_article_url(response.text, lang_out)
         translated_text = _extract_text_from_url(url_out)
-        get_available_languages(response.text)
     except Exception as e:
-        print 'Error: %s' % e
-        sys.exit(1)
+        return e
 
-    return translated_text
+    return translated_text.decode('utf-8')
 
 def _extract_text_from_url(url):
     return url.split('wiki/')[1].replace('_', ' ')
@@ -44,21 +45,33 @@ def find_translated_article_url(original_article_body, lang_out):
 
     return _decode_url(url[0]['href'].encode('utf-8'))
 
-def get_available_languages(original_article_body):
+def get_available_languages(text_in, lang_in):
     languages = []
-    soup = bs.BeautifulSoup(original_article_body)
+    response = send_request(WIKI_BASE_URL % lang_in + text_in)
+    soup = bs.BeautifulSoup(response.text)
     language_links = soup.findAll('a', attrs={'lang': True})
-    for link in language_links:
-        languages.append(link['lang'])
 
-    print 'Available in %s languages:' % len(languages)
-    for lang_code in languages:
-        print _get_lang_by_code(lang_code)
+    for link in language_links:
+        code = link['lang'].decode('utf-8')
+        lang = _get_lang_by_code(code) or code
+        languages.append((code, lang.decode('utf-8')))
+
+    return languages
+
+def get_all_languages():
+    languages = []
+    with open(LANG_FILE, 'r') as f:
+        for line in f.readlines():
+            lang_code = line.split(':')[0].decode('utf-8')
+            lang = line.split(':')[1].decode('utf-8')
+            languages.append((lang_code, lang))
+
+    languages.sort(key=lambda x: x[1])
 
     return languages
 
 def _get_lang_by_code(lang_code):
-    with open('languages.txt', 'r') as languages:
+    with open(LANG_FILE, 'r') as languages:
         for line in languages.readlines():
             code = line.split(':')[0].strip()
             lang = line.split(':')[1].strip()
@@ -66,17 +79,8 @@ def _get_lang_by_code(lang_code):
             if lang_code == code:
                 return lang
 
-def _is_disimbiguation(url):
-    if '(disimbiguation)' in url:
-        return True
-    else:
-        return False
-
 def send_request(url):
     r = requests.get(url)
-    if r.history:
-        for resp in r.history:
-            print resp.status_code
     if r.status_code == 200:
         return r
     elif r.status_code == 404:
@@ -106,6 +110,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-

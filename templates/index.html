@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>WikiTranslate</title>
+    </head>
+<body>
+    <h1><a href='/wikitranslate'>WikiTranslate</a></h1>
+<div>
+    <form>
+        Input language ({{ input_languages|length }} available):
+        <select name='input-lang'>
+          {% for lang_code, lang in input_languages %}
+          <option value="{{lang_code}}" {{'selected=selected' if lang_code == input_lang  }}>{{ lang }}</option>
+          {% endfor %}
+        </select>
+        {% if output_languages %}
+        <br><br>
+        Output language ({{ output_languages|length }} available):
+        <select name='output-lang'>
+          {% for lang_code, lang in output_languages %}
+          <option value="{{lang_code}}" {{'selected=selected' if lang_code == output_lang}}>{{ lang }}</option>
+          {% endfor %}
+        </select>
+        {% endif %}
+        <br><br>
+        Input word or phrase: <input type="text" name="input-text" value="{{input_text or ''}}">
+        <br><br>
+        <input type="submit" value="{{ 'Translate' if output_languages else 'See available languages' }}">
+    </form>
+    {% if translation %}
+    Translation: <b>{{input_text}} > {{translation}}</b>
+    {% endif %}
+</div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</body>
+</html>
