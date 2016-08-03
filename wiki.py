@@ -56,7 +56,7 @@ def get_available_languages(text_in, lang_in):
         lang = _get_lang_by_code(code) or code
         languages.append((code, lang.decode('utf-8')))
 
-    return languages
+    return _sort_lang(languages)
 
 def get_all_languages():
     languages = []
@@ -66,9 +66,7 @@ def get_all_languages():
             lang = line.split(':')[1].decode('utf-8')
             languages.append((lang_code, lang))
 
-    languages.sort(key=lambda x: x[1])
-
-    return languages
+    return _sort_lang(languages)
 
 def _get_lang_by_code(lang_code):
     with open(LANG_FILE, 'r') as languages:
@@ -78,6 +76,10 @@ def _get_lang_by_code(lang_code):
 
             if lang_code == code:
                 return lang
+
+def _sort_lang(lang_tuple):
+    lang_tuple.sort(key=lambda x: x[1])
+    return lang_tuple
 
 def send_request(url):
     r = requests.get(url)
