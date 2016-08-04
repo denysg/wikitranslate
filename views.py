@@ -41,7 +41,7 @@ def index():
 
     return render_template(
             'index.html',
-            input_languages=wiki.get_all_languages(),
+            all_languages=wiki.get_all_languages(),
             output_languages=output_languages,
             translation=translation,
             input_lang=input_lang,

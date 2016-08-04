@@ -1,0 +1,99 @@
+html {
+    font-family: sans-serif;
+    text-rendering: optimizeLegibility;
+    webkit-font-smoothing: antialiased;
+}
+
+select {
+    font-family: Helvetica;
+    font-size: 16px;
+    padding: 5px;
+    -webkit-appearance: none;
+    background: #ededed;
+    text-align-last: center;
+    text-weight: bold;
+}
+
+.text {
+    font-family: sans-serif;
+    font-variant: small-caps;
+    font-size: 18px;
+}
+
+.input-text {
+    font-family: Helvetica;
+    font-size: 20px;
+    width: 537px;
+    padding: 5px;
+}
+
+.translate-btn {
+    vertical-align: top;
+    font-family: Helvetica;
+    height: 37px;
+    background: #5db553;
+    border: 1px solid gray;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.translate-btn:hover {
+    background: #5BC781;
+}
+
+.translation {
+    font-size: 30px;
+    text-align: center;
+    font-family: 'Linux Libertine';
+    font-variant: small-caps;
+    font-weight: normal;
+    width: 100%;
+}
+
+.translation-div {
+    margin: auto;
+    width: 70%
+}
+
+.site-title {
+    font-size: 54px;
+    font-family: 'Linux Libertine';
+    font-variant: small-caps;
+    font-weight: normal;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.main-div {
+    border: 1px solid gray;
+    margin: auto;
+    padding: 10px;
+    width: 70%;
+    background: #f5f5f5;
+}
+
+.content {
+    padding-top: 30px;
+    margin: auto;
+    width: 50%;
+}
+
+.flash {
+    margin: auto;
+    width: 70%;
+    text-align: center;
+}
+
+a.title { text-decoration: none; }
+a:link { color: #000; }
+a:visited { color: #000; }
+a:hover { color: grey; }
+
+@font-face {
+    font-family: 'Linux Libertine'; /* normal */
+    src: url('/wikitranslate/static/fonts/Linux-Libertine.ttf.woff');
+font-weight: normal;
+font-style: normal;
+}

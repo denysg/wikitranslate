@@ -9,14 +9,6 @@ BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 LANG_FILE = os.path.join(BASE_PATH, 'languages.txt')
 WIKI_BASE_URL = 'https://%s.wikipedia.org/wiki/'
 
-class RequestError(Exception):
-    pass
-
-class OriginalPageNotFound(Exception):
-    pass
-
-class TranslationNotFound(Exception):
-    pass
 
 def translate(text_in, lang_in, lang_out):
     url_in = _get_wiki_link(text_in, lang_in)
@@ -25,7 +17,7 @@ def translate(text_in, lang_in, lang_out):
         url_out = find_translated_article_url(response.text, lang_out)
         translated_text = _extract_text_from_url(url_out)
     except Exception as e:
-        return e
+        raise e
 
     return translated_text.decode('utf-8')
 
@@ -67,8 +59,8 @@ def get_all_languages():
     languages = []
     with open(LANG_FILE, 'r') as f:
         for line in f.readlines():
-            lang_code = line.split(':')[0].decode('utf-8')
-            lang = line.split(':')[1].decode('utf-8')
+            lang_code = line.split(':')[0].strip().decode('utf-8')
+            lang = line.split(':')[1].strip().decode('utf-8')
             languages.append((lang_code, lang))
 
     return _sort_lang(languages)
@@ -120,3 +112,12 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+class RequestError(Exception):
+    pass
+
+class OriginalPageNotFound(Exception):
+    pass
+
+class TranslationNotFound(Exception):
+    pass

@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<title>WikiTranslate</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/wikitranslate/static/style.css">
+<link rel='icon' type='image/ico' href='/wikitranslate/static/favicon.ico'>
+</head>
+<body>
+  <h1 class="site-title"><a href="/wikitranslate" class="title">WikitranslatE</a></h1>
+  <div class="main-div">
+      {% block body %}{% endblock %}
+  {% if get_flashed_messages() %}
+  <br>
+  <br>
+  <div class="flash">
+  <hr>
+  {% for message in get_flashed_messages() -%}
+  <p>{{ message|safe }}</p>
+  </div>
+  {% endfor %}
+  </div>
+  {% endif %}
+</body>
+</html>
