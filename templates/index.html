@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block body %}
-<div class='content'>
+<div class='content' align='center'>
 <form>
 <select name='input-lang'>
 {% for lang_code, lang in all_languages -%}
@@ -16,14 +16,14 @@
 <br><br>
 <input type="text" name="input-text" class="input-text" value="{{input_text or ''}}" placeholder="Word or phrase to translate">
 <input type="submit" value="Translate" class="translate-btn">
-</form>
 </div>
+</form>
 {% if translation %}
 <div class='translation-div'>
 <br>
 <br>
 <hr>
-<h2 class='translation'><a href="{{input_wiki_link}}">{{input_text}}</a> > <a href="{{output_wiki_link}}">{{translation}}</a></h2>
+<h2 class='translation'><a href="{{input_wiki_link}}">{{input_text}}</a> ⇾ <a href="{{output_wiki_link}}">{{translation}}</a></h2>
 </div>
 {% endif %}
 {% endblock %}

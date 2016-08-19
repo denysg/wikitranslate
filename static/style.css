@@ -12,21 +12,21 @@ select {
     background: #ededed;
     text-align-last: center;
     text-weight: bold;
-    width: 191px;
+    width: 35%;
 }
 
 .text {
     font-family: sans-serif;
     font-variant: small-caps;
     font-size: 18px;
-    padding-left: 70px;
-    padding-right: 70px;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .input-text {
     font-family: Helvetica;
     font-size: 20px;
-    width: 537px;
+    width: 68%;
     padding: 5px;
 }
 
@@ -83,6 +83,11 @@ select {
     width: 50%;
 }
 
+form {
+    width: 100%;
+    margin: 0 auto;
+}
+
 .flash {
     margin: auto;
     width: 70%;
@@ -94,7 +99,7 @@ select {
 }
 
 .github-icon {
-    padding: 5px;
+    padding: 10px;
     width: 20px;
     height: 20px;
 }
