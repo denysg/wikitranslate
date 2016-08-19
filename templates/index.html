@@ -2,15 +2,14 @@
 {% block body %}
 <div class='content'>
 <form>
-<font class='text'>Input language</font>
 <select name='input-lang'>
 {% for lang_code, lang in all_languages -%}
 <option value="{{lang_code}}" {{'selected=selected' if lang_code == input_lang}}>{{ lang }}</option>
 {% endfor %}
 </select>
-<font class='text'>    Output language</font>
+<font class='text'>⟹</font>
 <select name='output-lang'>
-{% for lang_code, lang in all_languages -%}
+{% for lang_code, lang in output_languages -%}
 <option value="{{lang_code}}" {{'selected=selected' if lang_code == output_lang}}>{{ lang }}</option>
 {% endfor %}
 </select>

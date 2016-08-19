@@ -12,12 +12,15 @@ select {
     background: #ededed;
     text-align-last: center;
     text-weight: bold;
+    width: 191px;
 }
 
 .text {
     font-family: sans-serif;
     font-variant: small-caps;
     font-size: 18px;
+    padding-left: 70px;
+    padding-right: 70px;
 }
 
 .input-text {
@@ -84,6 +87,16 @@ select {
     margin: auto;
     width: 70%;
     text-align: center;
+}
+
+.footer-div {
+    text-align: center;
+}
+
+.github-icon {
+    padding: 5px;
+    width: 20px;
+    height: 20px;
 }
 
 a.title { text-decoration: none; }

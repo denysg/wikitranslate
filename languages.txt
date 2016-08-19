@@ -291,3 +291,4 @@ mh: Marshallese
 ii: Nuosu
 mo: Moldovan
 jam: Jamaican Patois
+be-x-old: Taraškievica
